@@ -1,8 +1,11 @@
 #include <Adafruit_NeoPixel.h>
 //http://www.conwaylife.com/wiki/Mazing
 //http://www.conwaylife.com/wiki/Mold
+#define NEOPIN 5
+#define SWITCH 3
 
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(64, 5, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(64, NEOPIN, NEO_GRB + NEO_KHZ800);
+
 
 int lifeMatrix[] = {
 	0, 0, 0, 0, 0, 0, 0, 0,
@@ -38,14 +41,17 @@ void setup() {
   strip.show();
   strip.setBrightness(100);
 
-  //start serial
-  Serial.begin(9600);
+  //pin
+  pinMode(SWITCH, INPUT);
 }
 
 void loop(){
+  int power = digitalRead(SWITCH);
+  if (power == 1){
 	GoLmatrix();
 	updateGoL();
-	delay(500);
+	delay(1000);
+  }
 }
 
 
@@ -100,10 +106,6 @@ void updateGoL(){
 		if (right){
 			adjacency += lifeMatrix[i + 1];
 		}
-
-        Serial.print(i);
-        Serial.print(':');
-        Serial.println(adjacency);
 
 		if (lifeMatrix[i] == 0){
 			if (adjacency == 3){
