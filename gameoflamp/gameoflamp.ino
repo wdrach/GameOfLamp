@@ -48,9 +48,13 @@ void setup() {
 void loop(){
   int power = digitalRead(SWITCH);
   if (power == 1){
+    strip.setBrightness(100);
 	GoLmatrix();
 	updateGoL();
 	delay(1000);
+  }
+  else{
+    strip.setBrightness(0);
   }
 }
 
